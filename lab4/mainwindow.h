@@ -29,5 +29,6 @@ private:
     void                InitPool(QString fileName);
     void                CompTurn(QString playerText);
 
+    void writeNewCity();
 };
 #endif // MAINWINDOW_H

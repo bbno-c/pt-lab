@@ -8,11 +8,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->lineEdit->setFocus();
     InitPool("city_pool.txt");
 }
 
 MainWindow::~MainWindow()
 {
+    writeNewCity();
     delete ui;
 }
 
@@ -99,17 +101,21 @@ void MainWindow::CompTurn(QString playerText)
         this->ui->plainTextEdit->appendPlainText("Comp: Я не знаю города на букву " + lastSymbol + "\0");
         this->ui->plainTextEdit->appendPlainText("=GAME OVER=\0");
         this->ui->pushButton->setDisabled(true);
-
-        QFile file("city_pool.txt");
-            if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
-                return;
-
-        QTextStream out(&file);
-        for (auto& city : m_newCity)
-        {
-            out << (city + "\n");
-        }
     }
 
     m_compCityPool.erase(itCity);
+    ui->lineEdit->setFocus();
+}
+
+void MainWindow::writeNewCity()
+{
+   QFile file("city_pool.txt");
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append))
+            return;
+
+    QTextStream out(&file);
+    for (auto& city : m_newCity)
+    {
+        out << (city + "\n");
+    }
 }
